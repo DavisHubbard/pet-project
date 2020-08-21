@@ -1,4 +1,4 @@
-package com.in28minutes.rest.webservices.restfulwebservices;
+package com.dhubbard.petproject.core;
 
 public class HelloWorldBean {
 
