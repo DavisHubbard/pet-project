@@ -1,4 +1,4 @@
-package com.dhubbard.petproject.core;
+package com.dhubbard.petproject.users;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
-public class HelloWorldController {
+public class UsersController {
 
 	private ArrayList<User> users = new ArrayList<>();
 

@@ -1,4 +1,4 @@
-package com.dhubbard.petproject.core;
+package com.dhubbard.petproject.users;
 
 public class User {
     private String email;

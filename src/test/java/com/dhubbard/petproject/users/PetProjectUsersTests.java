@@ -1,4 +1,4 @@
-package com.dhubbard.petproject.core;
+package com.dhubbard.petproject.users;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class PetProjectCoreTests {
+public class PetProjectUsersTests {
 
 	@Test
 	public void contextLoads() {
