@@ -1,25 +1,34 @@
 package com.dhubbard.petproject.core;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 public class HelloWorldController {
 
-	@GetMapping(path = "/hello-world")
-	public String helloWorld() {
-		return "Hello World";
+	private ArrayList<User> users = new ArrayList<>();
+
+	@PostMapping("/login")
+	ResponseEntity loginUser(@RequestBody UserLogin userLogin) {
+		for (User user : this.users) {
+			if (user.getEmail().equals(userLogin.getEmail()) && user.getPassword().equals(userLogin.getPassword())) {
+				return ResponseEntity.status(200).body("Logged in");
+			}
+		}
+		return ResponseEntity.status(401).body("Incorrect email or password");
 	}
 
-	@GetMapping(path = "/hello-world-bean")
-	public HelloWorldBean helloWorldBean() {
-		return new HelloWorldBean("Hello World - Changed");
-	}
-	
-	///hello-world/path-variable/in28minutes
-	@GetMapping(path = "/hello-world/path-variable/{name}")
-	public HelloWorldBean helloWorldPathVariable(@PathVariable String name) {
-		return new HelloWorldBean(String.format("Hello World, %s", name));
+	@PostMapping("/register")
+	ResponseEntity registerUser(@RequestBody UserLogin userLogin) {
+		User newUser = new User(userLogin.getEmail(), userLogin.getPassword());
+		for (User user : this.users) {
+			if (user.getEmail().equals(newUser.getEmail())) {
+				return ResponseEntity.status(409).body("User email already exists");
+			}
+		}
+		this.users.add(newUser);
+		return ResponseEntity.status(200).body("Successful registration");
 	}
 }
