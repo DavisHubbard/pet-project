@@ -2,14 +2,16 @@ package com.dhubbard.petproject.users;
 
 public class User {
     private String email;
-    private String password;
+    private byte[] password;
+    private byte[] salt;
 
     public User() {
     }
 
-    public User(String email, String password) {
+    public User(String email, byte[] password, byte[] salt) {
         this.email = email;
         this.password = password;
+        this.salt = salt;
     }
 
     public String getEmail() {
@@ -20,12 +22,20 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
+    public byte[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(byte[] password) {
         this.password = password;
+    }
+
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
     }
 
     @Override
