@@ -1,5 +1,6 @@
 package com.dhubbard.petproject.users;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,16 +10,19 @@ import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 public class UsersController {
 
 	private ArrayList<User> users = new ArrayList<>();
 	private SecureRandom random = new SecureRandom();
+	@Autowired
+	private UserRepository userRepository;
 
 	@PostMapping("/login")
 	ResponseEntity loginUser(@RequestBody UserLogin userLogin) {
-		for (User user : this.users) {
+		for (User user : this.userRepository.findAll()) {
 			byte[] salt = user.getSalt();
 			KeySpec spec = new PBEKeySpec(userLogin.getPassword().toCharArray(), salt, 65536, 128);
 			byte[] userLoginHash;
@@ -37,11 +41,11 @@ public class UsersController {
 
 	@PostMapping("/register")
 	ResponseEntity registerUser(@RequestBody UserLogin userLogin) {
-		for (User user : this.users) {
-			if (user.getEmail().equals(userLogin.getEmail())) {
-				return ResponseEntity.status(409).body("User email already exists");
-			}
+		List<User> usersWithEmail = userRepository.findByEmail(userLogin.getEmail());
+		if (!usersWithEmail.isEmpty()) {
+			return ResponseEntity.status(409).body("User email already exists");
 		}
+
 		byte[] salt = new byte[16];
 		random.nextBytes(salt);
 		KeySpec spec = new PBEKeySpec(userLogin.getPassword().toCharArray(), salt, 65536, 128);
@@ -54,7 +58,7 @@ public class UsersController {
 		}
 
 		User newUser = new User(userLogin.getEmail(), hash, salt);
-		this.users.add(newUser);
+		this.userRepository.save(newUser);
 		return ResponseEntity.status(200).body("Successful registration");
 	}
 }

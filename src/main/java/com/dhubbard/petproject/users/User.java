@@ -1,8 +1,24 @@
 package com.dhubbard.petproject.users;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class User {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private byte[] password;
+
+    @Column(nullable = false)
     private byte[] salt;
 
     public User() {
